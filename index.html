@@ -3,18 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub API Python Script</title>
+    <title>Hello World</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        pre {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 600px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <h1>GitHub API Python Script</h1>
-    <p>This Python script fetches a file from a GitHub repository, decodes it from Base64, and prints its content.</p>
-    <h2>How to Use</h2>
-    <ol>
-        <li>Clone this repository.</li>
-        <li>Update <code>script.py</code> with your GitHub repository details.</li>
-        <li>Run the script using Python:</li>
-        <pre><code>python script.py</code></pre>
-    </ol>
-    <p>You can view the source code <a href="https://github.com/your-username/github-pages-python-script/blob/main/script.py">here</a>.</p>
+    <h1>Hello World</h1>
+    <button onclick="fetchAndDecodeFile()">Click Me</button>
+    <pre id="fileContent"></pre>
+
+    <script>
+        async function fetchAndDecodeFile() {
+            const repoOwner = 'your-username';
+            const repoName = 'your-repository';
+            const filePath = 'path/to/your/file.txt';
+            const branch = 'main';
+            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}?ref=${branch}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                const content = atob(data.content);
+                document.getElementById('fileContent').textContent = content;
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+    </script>
 </body>
 </html>
